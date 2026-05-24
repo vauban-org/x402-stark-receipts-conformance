@@ -1,0 +1,58 @@
+{
+  "receipt_format": "stark-vauban-pay-v1",
+
+  "_comment_coalition": "Aligned with FeedOracle hybrid-PQC fixture (x402-foundation/x402#2357 coalition). Shared payment_hash + action_ref demonstrate the three-axis interop binding works byte-for-byte between independent runtimes.",
+  "coalition_partner_gist": "https://gist.github.com/feedoracle/704ab891170e2b43050f6f0ae00e6923",
+
+  "_comment_payment_hash": "SHA-256(utf8('x402-payment-base-0xUSDC-50000-base-mainnet-demo')). Shared with FeedOracle fixture verbatim ; documents a hypothetical x402 USDC-Base settlement for fixture purposes only.",
+  "payment_hash": "2ed186ebc66947eaac6a05a88c7bc096ee07ac11a2c44bb5580bd72b3670f580",
+  "payment_hash_preimage": "x402-payment-base-0xUSDC-50000-base-mainnet-demo",
+
+  "_comment_action_ref": "SHA-256(utf8(action_ref_preimage_jcs)) per RFC 8785 JCS canonicalisation. Shared with FeedOracle fixture verbatim. 32-byte work-proof binding per x402-foundation/x402#2332 andysalvo TrailRecord pattern, cross-referenced in #2357. Cross-layer property: mutating one byte of the preimage flips the digest on BOTH sides.",
+  "action_ref_preimage_jcs": "{\"action_type\":\"sanctions_screen\",\"agent_id\":\"did:web:agent-7.example.com\",\"scope\":\"counterparty-due-diligence\",\"timestamp_ms\":1747728000000}",
+  "action_ref_preimage_object": {
+    "agent_id": "did:web:agent-7.example.com",
+    "action_type": "sanctions_screen",
+    "scope": "counterparty-due-diligence",
+    "timestamp_ms": 1747728000000
+  },
+  "action_ref_hex": "10d8a38c01d8672176aa6e5209a368fde3e1831640d69e15283142b35880c2c1",
+
+  "_comment_inner_receipt": "SettlementReceipt with deterministic fields: payment_id UUID v4 nil-derived, tx_hash fixture label, block_number 9786058 (Starknet Sepolia fixture block), settled_at 1700000005 (Unix epoch 2023-11-14T22:13:25Z).",
+  "inner_receipt": {
+    "payment_id": "550e8400-e29b-41d4-a716-446655440000",
+    "tx_hash": "0xstark_fixture_tx_hash",
+    "block_number": 9786058,
+    "settled_at": 1700000005
+  },
+
+  "_comment_bound_receipt_cbor_b64": "base64url-no-pad (RFC 4648 §5) of canonical CBOR (RFC 8949 §4.2.1) of BoundReceipt<SettlementReceipt>. Total encoded size: 263 chars (197 CBOR bytes before base64). Computed by crates/zkpay-x402/examples/compute-fixture.rs using ciborium 0.2 + vauban-zkpay-x402 0.1.0.",
+  "bound_receipt_cbor_b64": "omdyZWNlaXB0pGpwYXltZW50X2lkeCQ1NTBlODQwMC1lMjliLTQxZDQtYTcxNi00NDY2NTU0NDAwMDBndHhfaGFzaHcweHN0YXJrX2ZpeHR1cmVfdHhfaGFzaGxibG9ja19udW1iZXIaAJVSympzZXR0bGVkX2F0GmVT8QVqYWN0aW9uX3JlZpggEBjYGKMYjAEY2BhnGCEYdhiqGG4YUgkYoxhoGP0Y4xjhGIMWGEAY1hieFRgoGDEYQhizGFgYgBjCGME",
+
+  "_comment_cbor_hex": "Same bytes as bound_receipt_cbor_b64 in lowercase hex for diff-friendly inspection.",
+  "bound_receipt_cbor_hex": "a26772656365697074a46a7061796d656e745f6964782435353065383430302d653239622d343164342d613731362d3434363635353434303030306774785f68617368773078737461726b5f666978747572655f74785f686173686c626c6f636b5f6e756d6265721a009552ca6a736574746c65645f61741a6553f1056a616374696f6e5f72656698201018d818a3188c0118d818671821187618aa186e18520918a3186818fd18e318e1188316184018d6189e1518281831184218b31858188018c218c1",
+
+  "verifier_command": "cargo test --package vauban-zkpay-x402 bound_receipt_interop_fixture 2>&1 | tail -3",
+
+  "_axis_2_feedoracle_hybrid_pqc": {
+    "status": "PUBLISHED",
+    "source": "https://gist.github.com/feedoracle/704ab891170e2b43050f6f0ae00e6923",
+    "description": "FeedOracle hybrid-PQC receipt: ES256K + ML-DSA-65 (FIPS 204) over identical JCS-canonical bytes, carrying the SAME payment_hash and action_ref as this vector. Verifier: verify_receipt.py in the gist, offline-checkable against public JWKS at https://tooloracle.io/.well-known/jwks.json.",
+    "binding_property": "Both signatures cover canonical bytes that include the shared payment_hash + action_ref. Mutating either invalidates both signatures."
+  },
+
+  "_axis_3_andysalvo_action_ref_verify": {
+    "status": "TBD",
+    "description": "andysalvo (TrailRecord, x402-foundation/x402#2332) action-ref-verify harness would consume the shared action_ref_preimage_jcs above, recompute SHA-256(JCS(preimage)) per RFC 8785, and assert equality with action_ref_hex. Repository: https://github.com/andysalvo/action-ref-verify.",
+    "interface_contract": {
+      "preimage_input": "action_ref_preimage_jcs above",
+      "expected_output": "10d8a38c01d8672176aa6e5209a368fde3e1831640d69e15283142b35880c2c1",
+      "verification_status": "pass"
+    }
+  },
+
+  "_conformance_failure_cases": {
+    "case_1_work_layer_binding_break": "Flip one byte of action_ref_preimage_jcs ; SHA-256 digest changes ; the cross-layer binding to this STARK receipt and to FeedOracle's hybrid-PQC receipt both detect the mutation. Demonstrates the work-proof binding is independent of the integrity layer.",
+    "case_2_receipt_integrity_break": "Flip one byte of bound_receipt_cbor_hex ; CBOR decode either fails or yields a different action_ref ; the STARK receipt no longer matches the on-chain payment_hash. For FeedOracle's side: both ES256K and ML-DSA-65 verifications fail since both sign the identical canonical bytes."
+  }
+}
