@@ -14,6 +14,26 @@ Authored and maintained by **Vauban Research** (research@vauban.tech).
 
 Future expansion : action_ref namespace, settlement-receipt vectors, refund-claim vectors. Pull requests welcome.
 
+## IETF Internet-Drafts Family
+
+The conformance vectors in this repository support 5 IETF Internet-Drafts authored by Vauban Research (all Active on datatracker, ISE Informational track) :
+
+| Draft | Title | Pages |
+|---|---|---|
+| [`draft-vauban-x402-stark-receipts-01`](https://datatracker.ietf.org/doc/draft-vauban-x402-stark-receipts/) | x402 STARK Receipt Format Extension | 34 |
+| [`draft-vauban-x402-lifecycle-fsm-00`](https://datatracker.ietf.org/doc/draft-vauban-x402-lifecycle-fsm/) | x402 V2 Payment Lifecycle Finite State Machine | 20 |
+| [`draft-vauban-x402-vpsf-algebra-00`](https://datatracker.ietf.org/doc/draft-vauban-x402-vpsf-algebra/) | x402 VPSF Claim Algebra | 20 |
+| [`draft-vauban-x402-starknet-anchor-00`](https://datatracker.ietf.org/doc/draft-vauban-x402-starknet-anchor/) | x402 STARK Receipts Starknet On-Chain Anchor | 21 |
+| [`draft-vauban-x402-delegation-binding-00`](https://datatracker.ietf.org/doc/draft-vauban-x402-delegation-binding/) | x402 DelegationGrant Agent Identity Binding | 20 |
+
+## Vauban-Authored Conformance Runners
+
+Three publishable conformance runners released 2026-05-24 (all Apache 2.0) :
+
+- **Rust** : [`vauban-x402-jcs-conformance`](https://crates.io/crates/vauban-x402-jcs-conformance) v0.1.0 + companion [`vauban-x402-canonical`](https://crates.io/crates/vauban-x402-canonical) (SDK helpers) + [`vauban-x402-wire`](https://crates.io/crates/vauban-x402-wire) (wire types)
+- **Python** : [`vauban-x402-stark-receipt`](https://pypi.org/project/vauban-x402-stark-receipt/) v0.1.0 (wraps rfc8785 by Trail of Bits)
+- **TypeScript** : [`@vauban-pay/substrate`](https://www.npmjs.com/package/@vauban-pay/substrate) v0.1.0 (wraps canonicalize 3.0.0)
+
 ## Independent Cross-Implementation Reference Matrix
 
 Cross-validated byte-identical against five independent RFC 8785 implementations :
@@ -25,6 +45,14 @@ Cross-validated byte-identical against five independent RFC 8785 implementations
 | [`gowebpki/jcs`](https://github.com/gowebpki/jcs) 1.0.1 | Go | GoWebPKI |
 | [`cyberphone/json-canonicalization`](https://github.com/cyberphone/json-canonicalization) | Java | Rundgren (RFC 8785 reference) |
 | [`vauban-x402-jcs-conformance`](https://crates.io/crates/vauban-x402-jcs-conformance) (uses `serde_jcs` 0.2.0) | Rust | Vauban Research (runner) ; l1h3r (`serde_jcs` upstream, Apache-2.0/MIT) |
+
+Vauban-authored runners (3 langs) cross-validated against the matrix above :
+
+| Package | Lang | Version | Registry |
+|---|---|---|---|
+| [`vauban-x402-jcs-conformance`](https://crates.io/crates/vauban-x402-jcs-conformance) | Rust | 0.1.0 | crates.io |
+| [`vauban-x402-stark-receipt`](https://pypi.org/project/vauban-x402-stark-receipt/) | Python | 0.1.0 | PyPI |
+| [`@vauban-pay/substrate`](https://www.npmjs.com/package/@vauban-pay/substrate) | TypeScript | 0.1.0 | npm |
 
 The Rust 5th-implementation runner is published as the [`vauban-x402-jcs-conformance`](https://crates.io/crates/vauban-x402-jcs-conformance) crate (Apache-2.0). It is the reference implementation used to validate the vectors in this repository against the four other implementations above.
 
