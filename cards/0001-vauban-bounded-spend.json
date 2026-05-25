@@ -1,0 +1,62 @@
+{
+  "canon_version": "jcs-rfc8785-v1",
+  "card_id": "0001-vauban-bounded-spend",
+  "capabilities": {
+    "approval_source": {
+      "method": "DelegationGrant",
+      "principal_id": "did:web:pay.vauban.tech",
+      "type": "cryptographic"
+    },
+    "buyer_agent_can_spend_without_human": false,
+    "buyer_agent_can_spend_without_human_note": "Conservative while status=PARTIAL. Flips to true once revocation endpoint is live and canon_version normalised to jcs-rfc8785-v1 post PR x402#2436.",
+    "cap": {
+      "currency": "USD",
+      "enforcement": "cryptographic",
+      "max_per_transaction": null,
+      "periodic_ceiling": null,
+      "revocation": {
+        "endpoint": "https://pay.vauban.tech/.well-known/revocation/v0/",
+        "note": "endpoint declared; live in Phase MVP (Q4 2026)"
+      }
+    },
+    "evidence_type": "cryptographic",
+    "evidence_type_note": "STARK proof (Stwo Circle M31) anchored on-chain. Post-quantum sound. No trusted setup.",
+    "preflight_verdict": "PARTIAL"
+  },
+  "contact": "research@vauban.tech",
+  "evidence_anchors": {
+    "ietf_drafts": [
+      "draft-vauban-x402-stark-receipts-02",
+      "draft-vauban-x402-starknet-anchor-01",
+      "draft-vauban-x402-lifecycle-fsm-01",
+      "draft-vauban-x402-vpsf-algebra-01",
+      "draft-vauban-x402-delegation-binding-01",
+      "draft-vauban-x402-pqc-receipts-01"
+    ],
+    "license": "Apache-2.0",
+    "on_chain": {
+      "address": "0x044dd87a94a801cf775d4c5e4b6703102d4e97e1cd1d0a8879341219ae4f19ff",
+      "chain": "starknet-sepolia",
+      "contract_name": "PaymentDemoEmitter",
+      "explorer": "https://sepolia.voyager.online/contract/0x044dd87a94a801cf775d4c5e4b6703102d4e97e1cd1d0a8879341219ae4f19ff"
+    },
+    "reference_matrix": {
+      "ci_badge": "https://github.com/vauban-org/x402-stark-receipts-conformance/actions/workflows/conformance.yml/badge.svg",
+      "description": "8-implementation conformance reference matrix (5 validated + 3 platform-scoped runners)",
+      "implementations_total": 8,
+      "implementations_validated": 5,
+      "url": "https://github.com/vauban-org/x402-stark-receipts-conformance",
+      "vectors_total": 11
+    }
+  },
+  "expires_at": "2027-05-25T15:00:00Z",
+  "issued_at": "2026-05-25T15:00:00Z",
+  "issuer_did": "did:web:pay.vauban.tech",
+  "status": "PARTIAL",
+  "subject": {
+    "demo_endpoint": "https://demo.pay.vauban.tech",
+    "name": "Vauban Pay bounded-spend authorization",
+    "production_endpoint": "https://pay.vauban.tech",
+    "repository": "https://github.com/vauban-org/x402-stark-receipts-conformance"
+  }
+}
