@@ -38,15 +38,18 @@ All drafts : Independent Submission (ISE), Informational, sole author Vauban Res
 
 ## Reference implementations
 
-Cross-validated byte-for-byte against five independent JCS (RFC 8785) implementations :
+The vector set is published as an **8-implementation reference matrix** across 8 languages. **5 implementations are validated byte-for-byte** via execution against upstream JCS RFC 8785 libraries ; **3 implementations** are committed as pure-stdlib reference runners under `runners/` for CI execution. See [`_attestations/2026-05-25-vauban-8-impl-extended.md`](_attestations/2026-05-25-vauban-8-impl-extended.md) for honest validation status per implementation.
 
-| Library | Language | Author |
-|---|---|---|
-| `rfc8785@0.1.4` | Python | Trail of Bits |
-| `canonicalize@3.0.0` | JavaScript | Erdtman + Rundgren |
-| `gowebpki/jcs v1.0.1` | Go | GoWebPKI |
-| `cyberphone/json-canonicalization` | Java | Rundgren (RFC 8785 reference) |
-| `serde_jcs 0.2.0` | Rust | l1h3r (consumed via `vauban-x402-jcs-conformance`) |
+| # | Library / runner | Language | Status |
+|---|---|---|---|
+| 1 | `rfc8785@0.1.4` (Trail of Bits) | Python | validated 11/11 |
+| 2 | `canonicalize@3.0.0` (Erdtman + Rundgren) | JavaScript | validated 11/11 |
+| 3 | `gowebpki/jcs v1.0.1` | Go | validated 11/11 |
+| 4 | `cyberphone/json-canonicalization` (Rundgren reference) | Java | validated 11/11 |
+| 5 | `serde_jcs 0.2.0` (l1h3r) consumed via `vauban-x402-jcs-conformance` | Rust | validated 11/11 |
+| 6 | [`runners/runner.php`](runners/runner.php) (pure stdlib) | PHP 8.0+ | reference, CI-pending |
+| 7 | [`runners/runner.rb`](runners/runner.rb) (pure stdlib) | Ruby 3.0+ | reference, CI-pending |
+| 8 | [`runners/runner.cs`](runners/runner.cs) (pure stdlib) | C# / .NET 8 | reference, CI-pending |
 
 ### Vauban Pay published packages
 

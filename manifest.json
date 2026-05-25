@@ -1,6 +1,6 @@
 {
   "name": "Vauban Pay x402 STARK Receipts Conformance Vectors",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "published_at": "2026-05-25",
   "canon_version": "jcs-rfc8785-v1",
   "license": "Apache-2.0",
@@ -31,6 +31,23 @@
     ],
     "python": "vauban-x402-stark-receipt@0.1.0",
     "javascript": "@vauban-pay/substrate@0.1.0"
+  },
+  "reference_runners": {
+    "summary": "8-implementation reference matrix : 5 upstream-library-validated + 3 pure-stdlib reference (CI-pending)",
+    "validated": [
+      {"language": "Python", "library": "rfc8785@0.1.4", "author": "Trail of Bits"},
+      {"language": "JavaScript", "library": "canonicalize@3.0.0", "author": "Erdtman + Rundgren"},
+      {"language": "Go", "library": "gowebpki/jcs v1.0.1", "author": "GoWebPKI"},
+      {"language": "Java", "library": "cyberphone/json-canonicalization", "author": "Rundgren (RFC 8785 reference)"},
+      {"language": "Rust", "library": "serde_jcs 0.2.0", "author": "l1h3r (consumed via vauban-x402-jcs-conformance)"}
+    ],
+    "reference_pending_ci": [
+      {"language": "PHP", "runtime": "PHP 8.0+", "path": "runners/runner.php", "stdlib_only": true},
+      {"language": "Ruby", "runtime": "Ruby 3.0+", "path": "runners/runner.rb", "stdlib_only": true},
+      {"language": "C#", "runtime": ".NET 8 SDK", "path": "runners/runner.cs", "stdlib_only": true}
+    ],
+    "attestation_canonical_5": "_attestations/2026-05-25-vauban-cross-impl.md",
+    "attestation_extended_8": "_attestations/2026-05-25-vauban-8-impl-extended.md"
   },
   "schemas": [
     {
