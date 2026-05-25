@@ -1,0 +1,69 @@
+---
+name: Conformance runners
+
+"on":
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  runner-php:
+    name: PHP stdlib runner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: json
+          coverage: none
+
+      - name: Run PHP conformance runner
+        run: php runners/runner.php vectors/
+
+  runner-ruby:
+    name: Ruby stdlib runner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby 3.2
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler: none
+
+      - name: Run Ruby conformance runner
+        run: ruby runners/runner.rb vectors/
+
+  runner-cs:
+    name: C# .NET 8 stdlib runner
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Create minimal .csproj for runner
+        run: |
+          cat > runners/runner.csproj <<'CSPROJ'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <OutputType>Exe</OutputType>
+              <TargetFramework>net8.0</TargetFramework>
+              <Nullable>enable</Nullable>
+              <ImplicitUsings>disable</ImplicitUsings>
+            </PropertyGroup>
+            <ItemGroup>
+              <Compile Include="runner.cs" />
+            </ItemGroup>
+          </Project>
+          CSPROJ
+
+      - name: Run C# conformance runner
+        run: dotnet run --project runners/runner.csproj -- vectors/
