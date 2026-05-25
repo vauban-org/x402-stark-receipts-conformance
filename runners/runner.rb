@@ -52,6 +52,14 @@ def sha256_hex(bytes)
   Digest::SHA256.hexdigest(bytes)
 end
 
+# Normalise a digest value for comparison: strip the 'sha256:' prefix if present.
+# Vectors may store digests as either raw hex or 'sha256:<hex>'; comparing
+# normalised forms avoids false MISMATCH when one side carries the prefix.
+def normalize_digest(d)
+  return d if d.nil?
+  d.sub(/^sha256:/, '')
+end
+
 def validate_vector(path)
   raw = File.read(path)
   vector = JSON.parse(raw)
@@ -69,9 +77,9 @@ def validate_vector(path)
   expected_result = vector['expected_result'] || 'UNKNOWN'
 
   if expected_result == 'PASS' && expected_pass
-    { status: digest == expected_pass ? 'OK' : 'MISMATCH', expected: expected_pass, computed: digest }
+    { status: normalize_digest(digest) == normalize_digest(expected_pass) ? 'OK' : 'MISMATCH', expected: expected_pass, computed: digest }
   elsif expected_result == 'FAIL' && expected_fail
-    { status: digest == expected_fail ? 'OK' : 'MISMATCH', expected: expected_fail, computed: digest }
+    { status: normalize_digest(digest) == normalize_digest(expected_fail) ? 'OK' : 'MISMATCH', expected: expected_fail, computed: digest }
   elsif expected_result == 'FAIL_AT_VERIFIER'
     { status: 'OK', note: 'canon-pass, verifier-fail (semantic, not tested here)' }
   else

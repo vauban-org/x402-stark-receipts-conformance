@@ -1,0 +1,14 @@
+<!--
+  runner.csproj — .NET 8 project file for the C# conformance runner.
+  License : Apache-2.0.
+  Authored by Vauban Research <research@vauban.tech>.
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>VaubanConformance</RootNamespace>
+  </PropertyGroup>
+</Project>

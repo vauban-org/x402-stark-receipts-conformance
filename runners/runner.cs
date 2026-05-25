@@ -65,6 +65,17 @@ public static class JcsCanonicalize
         foreach (var b in hash) sb.Append(b.ToString("x2"));
         return sb.ToString();
     }
+
+    /// <summary>
+    /// Normalise a digest value for comparison: strip the "sha256:" prefix if present.
+    /// Vectors may store digests as either raw hex or "sha256:&lt;hex&gt;"; comparing
+    /// normalised forms avoids false MISMATCH when one side carries the prefix.
+    /// </summary>
+    public static string NormalizeDigest(string d)
+    {
+        if (d == null) return null;
+        return d.StartsWith("sha256:", StringComparison.Ordinal) ? d.Substring(7) : d;
+    }
 }
 
 public static class Program
@@ -117,8 +128,8 @@ public static class Program
         if (root.TryGetProperty("expected_divergent_digest", out var edd)) expectedFail = edd.GetString();
         if (root.TryGetProperty("expected_result", out var er)) expectedResult = er.GetString();
 
-        if (expectedResult == "PASS" && expectedPass != null) return digest == expectedPass ? "OK" : "MISMATCH";
-        if (expectedResult == "FAIL" && expectedFail != null) return digest == expectedFail ? "OK" : "MISMATCH";
+        if (expectedResult == "PASS" && expectedPass != null) return JcsCanonicalize.NormalizeDigest(digest) == JcsCanonicalize.NormalizeDigest(expectedPass) ? "OK" : "MISMATCH";
+        if (expectedResult == "FAIL" && expectedFail != null) return JcsCanonicalize.NormalizeDigest(digest) == JcsCanonicalize.NormalizeDigest(expectedFail) ? "OK" : "MISMATCH";
         if (expectedResult == "FAIL_AT_VERIFIER") return "OK";
         return "SKIP";
     }

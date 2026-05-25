@@ -59,6 +59,16 @@ function sha256_hex(string $bytes): string {
     return hash('sha256', $bytes);
 }
 
+/**
+ * Normalise a digest value for comparison: strip the 'sha256:' prefix if present.
+ * Vectors may store digests as either raw hex or 'sha256:<hex>'; comparing
+ * normalised forms avoids false MISMATCH when one side carries the prefix.
+ */
+function normalize_digest(?string $d): ?string {
+    if ($d === null) return null;
+    return preg_replace('/^sha256:/', '', $d);
+}
+
 function validate_vector(string $path): array {
     $raw = file_get_contents($path);
     if ($raw === false) {
@@ -91,14 +101,14 @@ function validate_vector(string $path): array {
 
     if ($expected_result === 'PASS' && $expected_pass !== null) {
         return [
-            'status' => $digest === $expected_pass ? 'OK' : 'MISMATCH',
+            'status' => normalize_digest($digest) === normalize_digest($expected_pass) ? 'OK' : 'MISMATCH',
             'expected' => $expected_pass,
             'computed' => $digest,
         ];
     }
     if ($expected_result === 'FAIL' && $expected_fail !== null) {
         return [
-            'status' => $digest === $expected_fail ? 'OK' : 'MISMATCH',
+            'status' => normalize_digest($digest) === normalize_digest($expected_fail) ? 'OK' : 'MISMATCH',
             'expected' => $expected_fail,
             'computed' => $digest,
         ];
