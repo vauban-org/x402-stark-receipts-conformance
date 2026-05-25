@@ -1,0 +1,221 @@
+---
+title: "Adopters Registry"
+description: "Implementations and adopters of the x402 STARK Receipts canonical specification. Updated per-revision. Not exhaustive."
+icon: "certificate"
+---
+
+## Overview
+
+This registry records implementations and adopters of the x402 STARK Receipts
+canonical specification (`draft-vauban-x402-stark-receipts` and companion drafts).
+It is maintained by Vauban Pay as primary author of the specification track.
+
+<Note>
+  The registry is informational and reflects reported, verified adoptions only.
+  Omission does not imply non-conformance.
+  To register an adoption, see the [Adoption Process](#adoption-process) section.
+</Note>
+
+**Canonical version pin** : `jcs-rfc8785-v1`
+Accepted alternate forms: `x402-jcs-v1.0.0` and `1.0`
+Canonicalisation baseline: [RFC 8785](https://www.rfc-editor.org/rfc/rfc8785) (JSON Canonicalization Scheme)
+
+**Registry version** : 0.1.0 ; last updated 2026-05-25
+
+---
+
+## Primary Maintainer
+
+<Card title="Vauban Pay" icon="shield-check" href="https://pay.vauban.tech">
+  Primary author and normative authority for the x402 STARK Receipts lifecycle FSM.
+
+  - **Organisation** : Vauban Research
+  - **IETF contact** : research@vauban.tech
+  - **Category** : Production Adopter + Conformance Implementer
+  - **`canon_version` emitted** : `jcs-rfc8785-v1`
+  - **JCS library (Rust)** : `serde_jcs@0.2.0`
+  - **IETF I-D family adopted** : `draft-vauban-x402-stark-receipts-01` + 4 companion drafts
+</Card>
+
+### On-Chain Settlement Anchor (Starknet Sepolia)
+
+| Field | Value |
+|---|---|
+| Contract | `PaymentDemoEmitter` |
+| Address | `0x044dd87a94a801cf775d4c5e4b6703102d4e97e1cd1d0a8879341219ae4f19ff` |
+| Explorer | [Voyager Sepolia](https://sepolia.voyager.online/contract/0x044dd87a94a801cf775d4c5e4b6703102d4e97e1cd1d0a8879341219ae4f19ff) |
+| RPC | `https://sepolia.rpc.vauban.tech/rpc/v0_10` (self-hosted Pathfinder, v0.10 spec) |
+
+### Published Packages
+
+<CardGroup cols={2}>
+  <Card title="crates.io" icon="crab">
+    - [`vauban-x402-jcs-conformance` 0.1.0](https://crates.io/crates/vauban-x402-jcs-conformance)
+    - [`vauban-x402-canonical` 0.1.0](https://crates.io/crates/vauban-x402-canonical)
+    - [`vauban-x402-wire` 0.1.0](https://crates.io/crates/vauban-x402-wire)
+  </Card>
+  <Card title="PyPI + npm" icon="cube">
+    - [`vauban-x402-stark-receipt` 0.1.0](https://pypi.org/project/vauban-x402-stark-receipt/)
+    - [`@vauban-pay/substrate` 0.1.0](https://www.npmjs.com/package/@vauban-pay/substrate)
+  </Card>
+</CardGroup>
+
+---
+
+## Reference Implementation Matrix
+
+192/192 byte-for-byte agreements across 8 independent JCS implementations
+and 3 conformance vector sets (24 vectors per implementation). Attested 2026-05-24.
+
+### Conformance Vector Sets
+
+| Vector set | Vectors | Purpose |
+|---|---|---|
+| `action_ref_namespace_v0` | 8 | Namespace-prefixing for `action_ref` scope |
+| `action_ref_transactional_v0` | 8 | Transactional `action_ref` lifecycle, `payment_hash`-stable |
+| `compliance_receipt_v1` | 8 | Compliance receipt format per IETF I-D |
+
+### 8-Language Validation Matrix
+
+| # | Language | Library | Version | Status |
+|---|---|---|---|---|
+| 1 | Python | `rfc8785` | 0.1.4 | `validated` |
+| 2 | TypeScript / JavaScript | `canonicalize` | 3.0.0 | `validated` |
+| 3 | Go | `gowebpki/jcs` | v1.0.1 | `validated` |
+| 4 | Rust | `serde_jcs` | 0.2.0 | `validated` ; 5th-impl runner published |
+| 5 | Java | `erdtman:java-json-canonicalization` | 1.1 | `validated` ; RFC 8785 author implementation |
+| 6 | PHP | `root23/php-json-canonicalization` | 1.0.1 | `validated` ; 222K+ Packagist downloads |
+| 7 | C# / .NET | `Baqhub.Packages.JsonCanonicalization` | 1.0.1 | `reference-pending-CI` |
+| 8 | Ruby | `json-canonicalization` | 1.0.0 | `reference-pending-CI` |
+
+<Note>
+  **`validated`** : 24/24 byte-for-byte agreements across all three vector sets confirmed.
+
+  **`reference-pending-CI`** : manual validation confirmed; CI runner not yet committed to this repository.
+  Follow-up commit will add `runner_dotnet.cs` and `runner_ruby.rb`.
+</Note>
+
+<Info>
+  Implementation 5 (Java) is authored by Anders Rundgren, editor of RFC 8785. This means
+  the author of the canonicalisation specification has independently confirmed byte-level
+  interoperability with the Vauban Pay conformance corpus.
+</Info>
+
+---
+
+## Adoption Categories
+
+<CardGroup cols={1}>
+  <Card title="Category 1 : Production Adopter" icon="rocket">
+    The organisation runs the x402 STARK Receipts spec in live payment flows, emitting
+    `PAYMENT-SIGNATURE` or `PAYMENT-RESPONSE` headers that conform to the `jcs-rfc8785-v1`
+    canonicalisation discipline.
+
+    **Required disclosures at registration :**
+    - Production endpoint (may be anonymised domain)
+    - `canon_version` emitted
+    - JCS library used and version
+    - IETF I-D revision adopted
+  </Card>
+
+  <Card title="Category 2 : Conformance Implementer" icon="code">
+    The organisation has published a byte-for-byte-validated runner for at least one
+    conformance vector set in this repository, in any language, producing 8/8 agreement
+    across all vectors in that set.
+
+    **Required disclosures at registration :**
+    - Language and JCS library used
+    - Vector set(s) validated
+    - Runner location (source file URL or package reference)
+    - Result count (e.g. `8/8` per vector set)
+  </Card>
+
+  <Card title="Category 3 : Reference Citation" icon="book">
+    The organisation cites one or more drafts from the `draft-vauban-x402-*` IETF I-D
+    family in their own normative documentation, specification, or Internet-Draft.
+
+    **Required disclosures at registration :**
+    - Document title and URL citing the I-D
+    - Which I-D(s) are cited
+    - Citation context (normative / informative)
+  </Card>
+</CardGroup>
+
+---
+
+## External Adopters
+
+<Note>
+  No external adopters reported as of 2026-05-25. The first adopter notification process is open.
+  See [Adoption Process](#adoption-process) to register.
+</Note>
+
+---
+
+## Adoption Process
+
+<Steps>
+  <Step title="Prepare disclosures">
+    Gather the required disclosures for your adoption category (Production Adopter,
+    Conformance Implementer, or Reference Citation). See category definitions above.
+  </Step>
+
+  <Step title="Send registration email">
+    Email `research@vauban.tech` with subject line `[x402-stark-receipts] Adoption registration`.
+    Include your organisation name, contact email, category, and required disclosures.
+    Consent to public listing under Apache-2.0 terms is required.
+  </Step>
+
+  <Step title="Verification">
+    Verification covers two checks:
+
+    1. **Canonical vector reproduction** : your reported `canon_version` and JCS library
+       reproduce at least one full vector set with 8/8 byte-identical digests.
+
+    2. **Cross-axis interop binding check** (Production Adopters only) : a live
+       `PAYMENT-REQUIRED` challenge is issued; the returned `PAYMENT-SIGNATURE` header
+       is parsed against the wire format in `draft-vauban-x402-stark-receipts-01` Section 4.
+
+    Verification is completed within 10 business days.
+  </Step>
+
+  <Step title="Listing">
+    Verified adopters are listed in this registry and in `ADOPTERS.md` at the
+    conformance vectors repository root. Listing includes a `verified` status marker.
+  </Step>
+</Steps>
+
+---
+
+## Cross-References
+
+### IETF Internet-Drafts
+
+| Draft | Pages | Datatracker |
+|---|---|---|
+| `draft-vauban-x402-stark-receipts-01` | 34 | [datatracker.ietf.org](https://datatracker.ietf.org/doc/draft-vauban-x402-stark-receipts/) |
+| `draft-vauban-x402-lifecycle-fsm-00` | 20 | [datatracker.ietf.org](https://datatracker.ietf.org/doc/draft-vauban-x402-lifecycle-fsm/) |
+| `draft-vauban-x402-vpsf-algebra-00` | 20 | [datatracker.ietf.org](https://datatracker.ietf.org/doc/draft-vauban-x402-vpsf-algebra/) |
+| `draft-vauban-x402-starknet-anchor-00` | 21 | [datatracker.ietf.org](https://datatracker.ietf.org/doc/draft-vauban-x402-starknet-anchor/) |
+| `draft-vauban-x402-delegation-binding-00` | 20 | [datatracker.ietf.org](https://datatracker.ietf.org/doc/draft-vauban-x402-delegation-binding/) |
+
+### Canonicalisation Specification
+
+[RFC 8785 (JCS)](https://www.rfc-editor.org/rfc/rfc8785)
+
+### Conformance Vectors Repository
+
+[github.com/vauban-org/x402-stark-receipts-conformance](https://github.com/vauban-org/x402-stark-receipts-conformance)
+
+---
+
+## License
+
+Registry content and conformance vectors are licensed under **Apache-2.0**.
+
+Listing in this registry does not confer a licence. Adoption of the specification
+is governed by the terms of the IETF I-Ds and RFC 8785.
+
+---
+
+*Registry maintained by Vauban Research. Contact : `research@vauban.tech`*
