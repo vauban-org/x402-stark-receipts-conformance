@@ -1,0 +1,15 @@
+{
+  "name": "duplicate-key",
+  "spec": "action-ref-v1-jcs-sha256",
+  "expected_result": "FAIL",
+  "preimage": {
+    "action_type": "sanctions_screen",
+    "agent_id": "did:web:agent-a.example.com",
+    "agent_id": "did:web:agent-b.example.com",
+    "scope": "counterparty-due-diligence",
+    "timestamp_ms": 1747728000000
+  },
+  "expected_divergent_digest": "8680377670f1136998a0002b2b7ef93368c42eca9b68bd334957405c10b7565d",
+  "baseline_digest": "10d8a38c01d8672176aa6e5209a368fde3e1831640d69e15283142b35880c2c1",
+  "notes": "Duplicate key agent_id (values a and b). RFC 7159 section 4 leaves duplicate-key behavior undefined; parsers diverge. serde_json last-wins: agent_id becomes did:web:agent-b.example.com; JCS canonical bytes and SHA-256 diverge from the baseline. Implementations MUST reject or detect duplicate keys before canonicalization; silent last-wins is a stratum issue that cannot be recovered post-parse. expected_divergent_digest is the digest of the last-wins canonical form for impls that do not reject at parse."
+}

@@ -1,0 +1,14 @@
+{
+  "name": "required-field-missing",
+  "spec": "action-ref-v1-jcs-sha256",
+  "expected_result": "FAIL",
+  "preimage": {
+    "action_type": "sanctions_screen",
+    "scope": "counterparty-due-diligence",
+    "timestamp_ms": 1747728000000
+  },
+  "expected_divergent_digest": "2c0b510091f2b72b11edceb67168da9b2e64f0b15434105d0fa48a2083468703",
+  "baseline_digest": "10d8a38c01d8672176aa6e5209a368fde3e1831640d69e15283142b35880c2c1",
+  "missing_fields": ["agent_id"],
+  "notes": "agent_id field is absent. JCS canonicalizes any syntactically valid JSON object; it does not enforce schema presence. The partial preimage produces a distinct canonical form and digest (expected_divergent_digest). FAIL outcome depends entirely on producer-side or verifier-side validation: the schema MUST require all four canonical fields to be present before canonicalization is invoked. If validation is skipped, a verifier matching only against expected_divergent_digest would silently accept an unsigned action attribution. This vector documents the verifier-loud failure path (explicit mismatch) and its complement (silent acceptance risk when field presence is not enforced)."
+}

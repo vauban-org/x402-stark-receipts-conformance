@@ -1,0 +1,155 @@
+{
+  "name": "Vauban Pay x402 STARK Receipts Conformance Vectors",
+  "version": "0.2.0",
+  "published_at": "2026-05-25",
+  "canon_version": "jcs-rfc8785-v1",
+  "license": "Apache-2.0",
+  "maintainer": "Vauban Research <research@vauban.tech>",
+  "source": "https://github.com/vauban-org/x402-stark-receipts-conformance",
+  "documentation": "https://vauban.tech/vauban-zkpay/",
+  "live_demo": "https://demo.pay.vauban.tech",
+  "on_chain_anchor": {
+    "contract_name": "PaymentDemoEmitter",
+    "chain": "starknet-sepolia",
+    "address": "0x044dd87a94a801cf775d4c5e4b6703102d4e97e1cd1d0a8879341219ae4f19ff",
+    "explorer": "https://sepolia.voyager.online/contract/0x044dd87a94a801cf775d4c5e4b6703102d4e97e1cd1d0a8879341219ae4f19ff",
+    "rpc": "https://sepolia.rpc.vauban.tech/rpc/v0_10"
+  },
+  "ietf_drafts": [
+    "draft-vauban-x402-stark-receipts-01",
+    "draft-vauban-x402-lifecycle-fsm-00",
+    "draft-vauban-x402-vpsf-algebra-00",
+    "draft-vauban-x402-starknet-anchor-00",
+    "draft-vauban-x402-delegation-binding-00",
+    "draft-vauban-x402-pqc-receipts-00"
+  ],
+  "reference_packages": {
+    "rust": [
+      "vauban-x402-jcs-conformance@0.1.0",
+      "vauban-x402-canonical@0.1.0",
+      "vauban-x402-wire@0.1.0"
+    ],
+    "python": "vauban-x402-stark-receipt@0.1.0",
+    "javascript": "@vauban-pay/substrate@0.1.0"
+  },
+  "schemas": [
+    {
+      "name": "delegation-grant",
+      "path": "schemas/delegation-grant.schema.json",
+      "sha256": "sha256:2a0633d7465960b808fb372c6a6e7485ad4f73009cb452ff5d07d018365afcdf",
+      "spec": "JSON Schema Draft 2020-12 ; DelegationGrant six-element Claim shape"
+    },
+    {
+      "name": "settlement-receipt",
+      "path": "schemas/settlement-receipt.schema.json",
+      "sha256": "sha256:ac7d34436632bfbf17695e2f9855173e9a784ea74b6ebbb7ef2036f967e85039",
+      "spec": "JSON Schema Draft 2020-12 ; SettlementReceipt six-element Claim shape"
+    }
+  ],
+  "anchor_sets": [
+    {
+      "name": "stark",
+      "purpose": "STARK receipt canonicalisation (proof-of-payment-conditions) under JCS RFC 8785 ; cross-axis interop binding ; cross-runtime CBOR reference",
+      "proof_scheme": "stark-vauban-pay-v1",
+      "proof_system": "Stwo Circle STARK M31 (FRI-based, post-quantum sound)",
+      "anchor_chain": "starknet",
+      "vector_count": 5,
+      "pair_invariants": 1,
+      "vectors": [
+        {
+          "path": "vectors/stark/0001-baseline.json",
+          "sha256": "sha256:d0281ac91b1960994809d5bbb33417d26e66c9589152d0b659a6cfa255a6aff0",
+          "expected_result": "PASS"
+        },
+        {
+          "path": "vectors/stark/0002-field-name-load-bearing.json",
+          "sha256": "sha256:be8491c74140ea3e2184d44156d6a93067bc2a9309db18aace5c34011068ff98",
+          "expected_result": "FAIL"
+        },
+        {
+          "path": "vectors/stark/0003-stark-proof-tamper-evidence.json",
+          "sha256": "sha256:dcb3c152a893b0276ab59151ec574504141af93d6bd3337e67ef98881e1457a2",
+          "expected_result": "FAIL"
+        },
+        {
+          "path": "vectors/stark/0008-interop-shared-payment-hash.json",
+          "sha256": "sha256:d1fd54ccb171dc8940e923571d380564451984d308d2b0880ef314dfd89907a1",
+          "expected_result": "PASS"
+        },
+        {
+          "path": "vectors/stark/vector-stark-vauban-pay-v1.json",
+          "sha256": "sha256:502bb9701d5622068be8c2853df367ac55cf050550686476009031d3cca602c6",
+          "expected_result": "PASS",
+          "case": "BoundReceipt CBOR encoding cross-runtime baseline (RFC 8949 canonical)"
+        }
+      ]
+    },
+    {
+      "name": "delegation-grant",
+      "purpose": "DelegationGrant + SettlementReceipt pair under six-element Claim shape ; seven fiscal_authority qualification fields mapped to cryptographic primitives",
+      "vector_count": 3,
+      "pair_invariants": 1,
+      "vectors": [
+        {
+          "path": "vectors/delegation-grant/0001-baseline.json",
+          "sha256": "sha256:2a6c0a4c4d36c34f06a691a09c4e2019d6908e5f289820bc867a93d0ed15492a",
+          "expected_result": "PASS",
+          "case": "nominal grant + receipt, well within caps"
+        },
+        {
+          "path": "vectors/delegation-grant/0002-cap-respect.json",
+          "sha256": "sha256:0a491b3a1f13f361adbdc810c1db4a6a874dcfb0090700c2af078f926d7b5a4d",
+          "expected_result": "PASS",
+          "case": "edge ; amount equals cap_per_tx minus one"
+        },
+        {
+          "path": "vectors/delegation-grant/0003-cap-violation.json",
+          "sha256": "sha256:1368dec45d3c63fe0eb50aac37c15b45de6e760b3906f1f41ea22f725f0b7fc5",
+          "expected_result": "FAIL_AT_VERIFIER",
+          "case": "amount exceeds cap_per_tx ; verifier MUST reject"
+        }
+      ]
+    },
+    {
+      "name": "action_ref_adversarial",
+      "purpose": "Adversarial follow-on FAIL vectors for action-ref derivation (duplicate-key, NFD divergence, required-field-missing)",
+      "derivation": "action_ref = SHA-256(JCS(preimage))",
+      "vector_count": 3,
+      "pair_invariants": 0,
+      "vectors": [
+        {
+          "path": "vectors/action_ref_adversarial/0010-duplicate-key.json",
+          "sha256": "sha256:384ed01d1f172036b030149d13e1d48935038c349140711707fe5907564457e9",
+          "expected_result": "FAIL",
+          "divergent_digest_pinned": true
+        },
+        {
+          "path": "vectors/action_ref_adversarial/0011-nfd-divergence.json",
+          "sha256": "sha256:30c196d44ae14f74639bbda17f25bcfbdf283f055a27c2075dbc4c4437b737ee",
+          "expected_result": "FAIL",
+          "divergent_digest_pinned": true
+        },
+        {
+          "path": "vectors/action_ref_adversarial/0012-required-field-missing.json",
+          "sha256": "sha256:02ef2af20f3d4116fe9f29d7358ce76b8ec9d3bb497a70d70c52c7eb0313a12b",
+          "expected_result": "FAIL",
+          "divergent_digest_pinned": true
+        }
+      ]
+    }
+  ],
+  "total_vectors": 11,
+  "total_schemas": 2,
+  "cross_axis_binding": {
+    "payment_hash": "2ed186ebc66947eaac6a05a88c7bc096ee07ac11a2c44bb5580bd72b3670f580",
+    "action_ref": "10d8a38c01d8672176aa6e5209a368fde3e1831640d69e15283142b35880c2c1",
+    "description": "Shared verbatim across stark and delegation-grant anchor sets. Each layer (STARK proof, HTTP work-receipt, on-chain settlement) is independently verifiable ; mutating either value invalidates verification on every layer simultaneously."
+  },
+  "canonicalisation_discipline": {
+    "specification": "RFC 8785 (JCS)",
+    "digest_algorithm": "SHA-256",
+    "digest_encoding": "lowercase hex, prefixed sha256:",
+    "failure_surface": "producer-loud, verifier-silent",
+    "retention_property": "year-N reproduction ; canonical bytes identical across observer-and-time"
+  }
+}

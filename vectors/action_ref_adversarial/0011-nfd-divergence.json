@@ -1,0 +1,15 @@
+{
+  "name": "nfd-divergence",
+  "spec": "action-ref-v1-jcs-sha256",
+  "expected_result": "FAIL",
+  "preimage": {
+    "action_type": "sanctions_screen",
+    "agent_id": "did:web:agent-é.example.com",
+    "scope": "counterparty-due-diligence",
+    "timestamp_ms": 1747728000000
+  },
+  "expected_divergent_digest": "5c77595817951a1725a1fdf5708fd7bb3d82b74a3200ba99e67cf3bfca8e1416",
+  "baseline_digest": "10d8a38c01d8672176aa6e5209a368fde3e1831640d69e15283142b35880c2c1",
+  "nfc_reference_digest": "24d6bd1693f44c42f69ed395df20f1fbc7c6d933cd1774077909d3a88dea59f7",
+  "notes": "agent_id uses NFD encoding: the character U+00E9 (e with acute) is represented as U+0065 (e) + U+0301 (combining acute accent), UTF-8 bytes 0x65 0xCC 0x81. RFC 8785 JCS is byte-preserving; it does NOT apply Unicode normalization. NFC (UTF-8 0xC3 0xA9) and NFD (UTF-8 0x65 0xCC 0x81) produce different canonical byte strings and therefore different digests. The schema MUST require producers to emit a specific normalization form (NFC is the web-safe default per W3C). expected_divergent_digest is the NFD digest; nfc_reference_digest is the NFC digest (what a conformant NFC producer would emit). Any verifier pinning the NFC digest MUST reject the NFD input."
+}
