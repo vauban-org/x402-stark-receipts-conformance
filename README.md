@@ -6,6 +6,14 @@ Maintained by **Vauban Research** (`research@vauban.tech`).
 
 ---
 
+## See it run
+
+![An agent completes the x402 flow; two third-party checks pass (read-only replay)](media/agentic-flow-en.gif)
+
+*The agentic x402 flow on Starknet Sepolia, replayed read-only in 11 s: the agent completes 402, pays, gets 200 ; an Ed25519 run certificate verifies ; the delegation STARK proof verifies in 33 ms. No transaction is emitted by the replay. Try it yourself: [live demo](https://demo.pay.vauban.tech/agents/) ; [memo](https://vauban.tech/vauban-zkpay/w1-memo/).*
+
+---
+
 ## Coverage
 
 - **11 vectors** across 3 anchor sets : STARK receipt canonicalisation baseline + interop + cross-runtime CBOR, bounded-spend authorization (DelegationGrant + SettlementReceipt pair), and action-ref adversarial follow-on
