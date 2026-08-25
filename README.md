@@ -6,6 +6,10 @@ Maintained by **Vauban Research** (`research@vauban.tech`).
 
 ---
 
+## Make us wrong
+
+A standing, falsifiable challenge on one shielded testnet payment: find the hidden amount on-chain, or get our verifier to accept a tampered receipt. Everything you need is public, no account, no code of ours to run — see [CHALLENGE.md](CHALLENGE.md). Wins are listed there, with attribution as you ask for it.
+
 ## See it run
 
 ![An agent completes the x402 flow; two third-party checks pass (read-only replay)](media/agentic-flow-en.gif)
