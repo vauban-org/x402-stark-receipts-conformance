@@ -9,12 +9,18 @@ maintained by Vauban Pay as primary author of the specification track.
 reported and verified adoptions only. It is not exhaustive ; omission does
 not imply non-conformance.
 
-**Canonical version pin** : `jcs-rfc8785-v1`
-Accepted alternate forms : `x402-jcs-v1.0.0` and `1.0`
-Canonicalisation baseline : RFC 8785 (JCS, JSON Canonicalization Scheme)
+**Canonical version identifiers, with provenance**
 
-**Last updated** : 2026-05-25
-**Registry version** : 0.1.0
+- `x402-jcs-v1.0.0` : native identifier, emitted by Vauban Pay tooling.
+- `jcs-rfc8785-v1` : accepted for interoperability. This identifier is
+  specified in
+  [`draft-hopley-x402-canonicalisation-jcs-v1`](https://datatracker.ietf.org/doc/draft-hopley-x402-canonicalisation-jcs-v1/).
+- `1.0` : accepted legacy alternate.
+
+Canonicalisation baseline for all forms : RFC 8785 (JCS, JSON Canonicalization Scheme)
+
+**Last updated** : 2026-08-31
+**Registry version** : 0.2.0
 
 ---
 
@@ -57,6 +63,10 @@ Canonicalisation baseline : RFC 8785 (JCS, JSON Canonicalization Scheme)
 192/192 byte-for-byte agreements across 8 independent JCS implementations
 and 3 conformance vector sets (24 vectors per implementation, 8 vectors per
 set). Attested 2026-05-24.
+
+This matrix documents our own runs over our own vector sets. The
+multi-implementation matrix form is common practice in canonicalisation
+conformance work ; no exclusivity over the form is claimed.
 
 ### Conformance vector sets validated
 
