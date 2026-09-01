@@ -119,6 +119,20 @@ attests one receipt hash and your file hashes to another:
 
 `Valid` on a receipt we did not prove is a win.
 
+## Challenge 3 ; the live game (a fresh target every day)
+
+The claim above is one payment, frozen in 2026. Since 2026-09-01 the same claim
+is made LIVE, on demand, by anyone: https://demo.pay.vauban.tech/shielded lets
+you pick a number (1-999999). Our pool settles exactly
+`10000000000000 + your number` wei on Starknet Sepolia, and the page hands you
+the transaction hash, the block, and the same scan as Challenge 1,
+parameterised with YOUR coordinates.
+
+Every number ever hidden through that page is a standing target of this
+challenge. Find any of them in any public encoding of anything the pool
+published, and you win. The page's counter says how many have been hidden so
+far; the Hall of fame below says how many have been found.
+
 ## Rules
 
 - One issue per attempt, in `vauban-org/x402-stark-receipts-conformance`, titled
